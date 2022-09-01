@@ -1,13 +1,13 @@
-import homeMenu.HomeMenu;
-import signup.Signup;
 import utils.PrintHandler;
 
-import java.util.function.Consumer;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        final List<String> homeMenuOptions = List.of("Login", "Signup");
+
         PrintHandler.printMessage.accept("Welcome to atm project");
-        new HomeMenu();
+        new HomeMenu(homeMenuOptions);
 
     }
 }

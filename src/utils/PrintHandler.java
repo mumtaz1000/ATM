@@ -12,7 +12,6 @@ public class PrintHandler {
 
         for (String contact: listOfContacts) {
             String[] elements = contact.split(",");
-            System.out.println("Element "+elements[option]);
             requiredData = elements[option];
         }
         return requiredData;
