@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class User {
@@ -36,20 +37,21 @@ public class User {
         String input;
         Scanner scanner = new Scanner(System.in);
 
-        PrintHandler.printMessage.accept("Enter your full name");
+        System.out.println("Enter your full name");
         input = scanner.nextLine();
         setFullname(input);
-        PrintHandler.printMessage.accept("Enter your user name");
+        System.out.println("Enter your user name");
         input = scanner.nextLine();
         setUsername(input);
-        PrintHandler.printMessage.accept("Enter password");
+        System.out.println("Enter password");
         input = scanner.nextLine();
         setPassword(input);
+        System.out.println("User info is successfully taken!!!");
     }
     public static boolean nameAlreadyExist(List<String> inputList, String search){
         boolean found = false;
         for (String name: inputList) {
-            if(name.contains(search))
+            if(Objects.equals(name, search))
             {found = true;
                 break;}
         }

@@ -5,8 +5,14 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class PrintHandler {
-    public static Consumer<String> printMessage = message -> System.out.println(message);
+    public static void optionList(List<String> options) {
+        for (int index = 0; index < options.size(); index++) {
+            int number = index + 1;
+            String label = options.get(index);
 
+            System.out.println("[" + number + "] " + label);
+        }
+    }
     public static String splitFileString(List<String> listOfContacts, int option){
         String requiredData = null;
 
@@ -25,14 +31,6 @@ public class PrintHandler {
             clearScreenUnix();
         }
     }
-    public static void menuOptionList(List<String> options){
-        for(int index=0; index<options.size(); index++){
-            int number = index+1;
-            String label = options.get(index);
-
-            System.out.println("["+number+"]"+ label);
-        }
-    }
     private static void clearScreenUnix() {
         String clearScreenASCIICode = "\033[H\033[2J";
 
@@ -47,5 +45,9 @@ public class PrintHandler {
         } catch(IOException | InterruptedException error){
             System.out.println("Error while clearing screen on windows");
         }
+    }
+
+    public static void appTitle() {
+        System.out.println("Welcome to Atm Home Menu");
     }
 }
