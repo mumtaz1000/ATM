@@ -30,7 +30,7 @@ public class Login extends User {
             found = checkCredentials(nameNumberString, getFullname(), getUsername(), getPassword());
             if(found) {
                 randomAccessFileObj.close();
-                new Account();
+                new Account(nameNumberString);
                 break;}
         }
         randomAccessFileObj.close();

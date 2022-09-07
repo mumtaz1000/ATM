@@ -1,5 +1,6 @@
 package account;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class AccountController {
@@ -12,19 +13,21 @@ public class AccountController {
         this.view = view;
         this.scanner = new Scanner(System.in);
     }
-    public void requestUserInput() {
+    public void requestUserInput(String nameNumberString) {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
 
         try {
             int selectedOption = Integer.parseInt(input);
 
-            model.handleOption(selectedOption);
+            model.handleOption(selectedOption, nameNumberString);
         }
         catch (NumberFormatException | IndexOutOfBoundsException exception) {
             view.printInvalidOption();
             view.printRequest();
-            requestUserInput();
+            requestUserInput(nameNumberString);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

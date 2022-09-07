@@ -18,13 +18,13 @@ public class Signup extends User{
         createNewAccount();
     }
     public void createNewAccount() throws IOException, NoSuchAlgorithmException {
+        FileHandler fileHandlerObject = new FileHandler();
         List<String> nameList = new ArrayList<>();
         String nameNumberString, crypticPassword;
         boolean found;
-        String filename = "assets/AtmUserData.txt";
-        RandomAccessFile randomAccessFileObj = new RandomAccessFile(filename,"rw");
+        RandomAccessFile randomAccessFileObj = new RandomAccessFile(fileHandlerObject.fileName,"rw");
 
-        FileHandler.createFile();
+        fileHandlerObject.createFile();
         while(randomAccessFileObj.getFilePointer() < randomAccessFileObj.length()){
             nameNumberString = randomAccessFileObj.readLine();
             nameList.add(PrintHandler.splitFileString(Collections.singletonList(nameNumberString),0));
@@ -32,7 +32,7 @@ public class Signup extends User{
         found = User.nameAlreadyExist(nameList, getFullname());
         if (!found){
             crypticPassword = PasswordHandler.createCrypticPassword(getPassword());
-            nameNumberString = getFullname()+","+getUsername()+","+crypticPassword;
+            nameNumberString = getFullname()+","+getUsername()+","+crypticPassword+",0";
             randomAccessFileObj.writeBytes(nameNumberString);
             randomAccessFileObj.writeBytes(System.lineSeparator());
             randomAccessFileObj.close();
@@ -41,4 +41,6 @@ public class Signup extends User{
             randomAccessFileObj.close();
         }
     }
+
+
 }
