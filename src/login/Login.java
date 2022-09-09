@@ -1,6 +1,7 @@
 package login;
 
 import account.Account;
+import authentication.Authentication;
 import utils.FileHandler;
 import utils.User;
 
@@ -10,10 +11,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.Objects;
 
-import static utils.PasswordHandler.createCrypticPassword;
 import static utils.PrintHandler.splitFileString;
 
 public class Login extends User {
+    Authentication authenticationObject = new Authentication();
     public Login() throws IOException, NoSuchAlgorithmException {
         findUserFromData();
     }
@@ -37,7 +38,7 @@ public class Login extends User {
         return found;
     }
     private boolean checkCredentials(String credentialList, String fullname, String userName, String password) throws NoSuchAlgorithmException {
-        String searchName, crypticPassword, searchUsername, searchPassword;
+        String searchName, searchUsername, searchPassword;
         boolean found = false;
 
         searchName = (splitFileString(Collections.singletonList(credentialList), 0));
@@ -45,15 +46,9 @@ public class Login extends User {
         searchPassword = (splitFileString(Collections.singletonList(credentialList), 2));
         if (Objects.equals(searchName, fullname)) {
             System.out.println("Required name exist!!!");
-            crypticPassword = createCrypticPassword(password);
 
-            if(Objects.equals(searchUsername, userName)&&Objects.equals(searchPassword, crypticPassword))
-            {
-                System.out.println("User can login!!!");
-                found = true;
-            } else {
-                System.out.println("Incorrect username or password!!!");
-            }
+            found = authenticationObject.userNamePasswordExists(searchUsername, searchPassword, userName, password);
+
         }
         return found;
     }

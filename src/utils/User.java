@@ -1,14 +1,13 @@
 package utils;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class User {
     private String fullname;
     private String username;
     private String password;
-
+    String input;
+    Scanner scanner = new Scanner(System.in);
     public String getFullname() {
         return fullname;
     }
@@ -34,27 +33,20 @@ public class User {
     }
 
     public void requestUserInfo(){
-        String input;
-        Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter your full name");
         input = scanner.nextLine();
         setFullname(input);
+        requestUserNamePassword();
+        System.out.println("User info is successfully taken!!!");
+    }
+    public void requestUserNamePassword(){
         System.out.println("Enter your user name");
         input = scanner.nextLine();
         setUsername(input);
         System.out.println("Enter password");
         input = scanner.nextLine();
         setPassword(input);
-        System.out.println("User info is successfully taken!!!");
     }
-    public static boolean nameAlreadyExist(List<String> inputList, String search){
-        boolean found = false;
-        for (String name: inputList) {
-            if(Objects.equals(name, search))
-            {found = true;
-                break;}
-        }
-        return found;
-    }
+
 }

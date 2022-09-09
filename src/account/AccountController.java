@@ -1,6 +1,7 @@
 package account;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class AccountController {
@@ -13,8 +14,7 @@ public class AccountController {
         this.view = view;
         this.scanner = new Scanner(System.in);
     }
-    public void requestUserInput(String nameNumberString) {
-        Scanner scanner = new Scanner(System.in);
+    public void requestUserInput(String nameNumberString) throws NoSuchAlgorithmException {
         String input = scanner.nextLine();
 
         try {

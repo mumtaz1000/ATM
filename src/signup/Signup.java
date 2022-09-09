@@ -1,5 +1,6 @@
 package signup;
 
+import authentication.Authentication;
 import utils.FileHandler;
 import utils.PasswordHandler;
 import utils.PrintHandler;
@@ -29,7 +30,7 @@ public class Signup extends User{
             nameNumberString = randomAccessFileObj.readLine();
             nameList.add(PrintHandler.splitFileString(Collections.singletonList(nameNumberString),0));
         }
-        found = User.nameAlreadyExist(nameList, getFullname());
+        found = Authentication.dataExist(nameList, getFullname());
         if (!found){
             crypticPassword = PasswordHandler.createCrypticPassword(getPassword());
             nameNumberString = getFullname()+","+getUsername()+","+crypticPassword+",0";

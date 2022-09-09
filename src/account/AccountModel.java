@@ -1,70 +1,70 @@
 package account;
 
+import transaction.Transaction;
 import utils.FileHandler;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Scanner;
 
-import static utils.PrintHandler.splitFileString;
-
+import static utils.PasswordHandler.createCrypticPassword;
 public class AccountModel {
     FileHandler fileHandlerObject = new FileHandler();
+    Transaction transactionObject = new Transaction();
     Scanner scanner = new Scanner(System.in);
-    private final List<String> menuOptions = List.of("View balance", "Withdraw", "Deposite", "Transfer");
+    private final List<String> menuOptions = List.of("View balance", "Withdraw", "Deposite", "Transfer","Update Username","Update password");
     public List<String> getMenuOptions() {
         return menuOptions;
     }
 
-    public void handleOption(int selectedOption, String nameNumberString) throws IndexOutOfBoundsException, IOException {
+    public void handleOption(int selectedOption, String nameNumberString)
+            throws IndexOutOfBoundsException, IOException, NoSuchAlgorithmException {
         String updateString;
 
         switch (selectedOption) {
-            case 1 -> viewBalance(nameNumberString);
+            case 1 -> transactionObject.viewBalance(nameNumberString);
             case 2 -> {
-                updateString = withDrawMoney(nameNumberString,getRequiredAmount());
+                updateString = transactionObject.withDrawMoney(nameNumberString, transactionObject.getRequiredAmount());
                 fileHandlerObject.updateFile(nameNumberString, updateString);
             }
             case 3 -> {
-                updateString = depositeMoney(nameNumberString,getRequiredAmount());
+                updateString = transactionObject.depositeMoney(nameNumberString,transactionObject.getRequiredAmount());
                 fileHandlerObject.updateFile(nameNumberString, updateString);
             }
             case 4 -> {
-                String userData = fileHandlerObject.accountExist(getTransferAccountName());
+                String userData = fileHandlerObject.accountExist(transactionObject.getTransferAccountName());
                 if( userData != null)
                 {
-                    updateString = depositeMoney(userData,getRequiredAmount());
+                    updateString = transactionObject.depositeMoney(userData,transactionObject.getRequiredAmount());
                     fileHandlerObject.updateFile(userData, updateString);
                 }
+            }
+            case 5 -> {
+                updateString = fileHandlerObject.createUpdateUsernameString(nameNumberString,handleUsernameUpdate());
+                fileHandlerObject.updateFile(nameNumberString, updateString);
+            }
+            case 6 -> {
+                updateString = fileHandlerObject.createUpdatePasswordString(nameNumberString,handlePasswordUpdate());
+                fileHandlerObject.updateFile(nameNumberString, updateString);
             }
             default -> throw new IndexOutOfBoundsException();
         }
     }
-    protected void viewBalance(String personInformation) {
-        int totalBalance = Integer.parseInt(splitFileString(Collections.singletonList(personInformation),3));
-        System.out.println("Your total balance is "+totalBalance);
-    }
-    public int getRequiredAmount(){
 
-        System.out.println("Enter the amount ");
-        return scanner.nextInt();
-    }
-    public String getTransferAccountName(){
+    public String handleUsernameUpdate(){
+        String username;
 
-        System.out.println("Enter the user name of the person to whom you want to transfer money");
-        return scanner.next();
+        System.out.println("Enter the updated user name");
+        username = scanner.next();
+        return username;
     }
-    public String withDrawMoney(String dataString, int amount){
-        int totalBalance = Integer.parseInt(splitFileString(List.of(dataString),3));
+    public String handlePasswordUpdate() throws NoSuchAlgorithmException {
+        String password;
 
-        totalBalance -= amount;
-        return fileHandlerObject.createRequiredString(dataString, String.valueOf(totalBalance));
+        System.out.println("Enter the updated password");
+        password = scanner.next();
+        return createCrypticPassword(password);
     }
-    public String depositeMoney(String dataString, int amount){
-        int totalBalance = Integer.parseInt(splitFileString(List.of(dataString),3));
 
-        totalBalance += amount;
-        return fileHandlerObject.createRequiredString(dataString, String.valueOf(totalBalance));
-    }
 }

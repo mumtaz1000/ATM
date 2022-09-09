@@ -3,7 +3,6 @@ package utils;
 import java.io.IOException;
 import java.io.File;
 import java.io.RandomAccessFile;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 import static utils.PrintHandler.splitFileString;
@@ -50,28 +49,34 @@ public class FileHandler {
         temporaryRandomAccessFile.close();
         randomAccessFile.close();
         temporaryFile.delete();
-        System.out.println("Your balance is updated");
+        System.out.println("Your account is update!!!");
     }
     public String accountExist(String userName) throws IOException{
         String nameNumberString, result = null;
-        RandomAccessFile randomAccessFileObj = new RandomAccessFile(fileName,"rw");
+        try (RandomAccessFile randomAccessFileObj = new RandomAccessFile(fileName, "rw")) {
 
-        createFile();
-        while(randomAccessFileObj.getFilePointer() < randomAccessFileObj.length()){
-            nameNumberString = randomAccessFileObj.readLine();
-            if(Objects.equals(userName,splitFileString(List.of(nameNumberString),1))){
-                System.out.println("Account exists!");
-                result = nameNumberString;
+            createFile();
+            while (randomAccessFileObj.getFilePointer() < randomAccessFileObj.length()) {
+                nameNumberString = randomAccessFileObj.readLine();
+                if (Objects.equals(userName, splitFileString(List.of(nameNumberString), 1))) {
+                    System.out.println("Account exists!");
+                    result = nameNumberString;
+                }
             }
         }
         return result;
     }
 
-    public String createRequiredString(String dataString, String amount){
-        String updatedString = splitFileString(List.of(dataString),0)+","+
-                                splitFileString(List.of(dataString),1)+","+
-                                splitFileString(List.of(dataString),2)+","+
-                                amount;
-        return updatedString;
+    public String createUpdateUsernameString(String dataString,String username){
+        return splitFileString(List.of(dataString),0)+","+
+                username+","+
+                splitFileString(List.of(dataString),2)+","+
+                splitFileString(List.of(dataString),3);
+    }
+    public String createUpdatePasswordString(String dataString,String password){
+        return splitFileString(List.of(dataString),0)+","+
+                splitFileString(List.of(dataString),1)+","+
+                password+","+
+                splitFileString(List.of(dataString),3);
     }
 }
