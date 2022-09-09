@@ -13,11 +13,11 @@ public class PrintHandler {
             System.out.println("[" + number + "] " + label);
         }
     }
-    public static String splitFileString(List<String> listOfContacts, int option){
+    public static String splitFileString(List<String> listString, int option){
         String requiredData = null;
 
-        for (String contact: listOfContacts) {
-            String[] elements = contact.split(",");
+        for (String data: listString) {
+            String[] elements = data.split(",");
             requiredData = elements[option];
         }
         return requiredData;
